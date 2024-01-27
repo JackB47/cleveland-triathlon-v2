@@ -1,0 +1,15 @@
+# Generic
+node_modules
+*/.vscode
+*/.env*
+!*/.env.example
+.DS_Store
+
+# Studio
+/studio/.sanity
+/studio/dist
+
+# Astro
+/client/dist/
+.astro/
+/client/.vercel
