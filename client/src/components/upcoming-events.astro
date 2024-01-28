@@ -1,0 +1,20 @@
+---
+  const { node } = Astro.props;
+  import { sanityClient } from "sanity:client";
+
+  const upcomingEvents = await sanityClient.fetch(`*[_type == "event" && dateTime(date.start) > dateTime(now())]`)
+
+  console.log({upcomingEvents})
+---
+<section class="content-block">
+  <h2 class="font-semibold text-5xl uppercase">{ node.title }</h2>
+  <div>
+    {upcomingEvents.map(event => (
+      <article>
+        <h3>{event.title}</h3>
+        <p>{event.description}</p>
+        <a href={`/events/${event.slug.current}`} class="button pseudo-underline-parent"><span>View Event</span></a>
+      </article>
+    ))}
+  </div>
+</section>

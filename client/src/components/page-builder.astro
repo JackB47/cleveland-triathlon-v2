@@ -1,0 +1,20 @@
+---
+import { PortableText } from 'astro-portabletext';
+import Hero from './hero.astro';
+import ContactForm from './contact-form.astro';
+import UpcomingEvents from './upcoming-events.astro';
+
+const { blocks } = Astro.props;
+
+---
+
+<PortableText
+  value={blocks}
+  components={{
+    type: {
+      hero: Hero,
+      contactForm: ContactForm,
+      upcomingEvents: UpcomingEvents
+    }
+  }}
+/>

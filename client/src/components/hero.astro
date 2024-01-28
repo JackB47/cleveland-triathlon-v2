@@ -1,0 +1,15 @@
+---
+  import { urlForImage } from '../../sanity/urlForImage'
+
+  console.log(Astro.props)
+  const { title, subtitle, backgroundImage, overlayOpacity} = Astro.props.node
+---
+
+<div class="relative flex items-center justify-center mb-4 md:mb-8 lg:mb-10">
+  <div class="absolute text-white z-[1] pl-4 content-block w-full">
+    <h1 class="uppercase text-5xl font-semibold tracking-normal mb-2 md:mb-4">{title}</h1>
+    {subtitle && <h2 class="pl-1">{subtitle}</h2>}
+  </div>
+  <img src={urlForImage(backgroundImage)} class="w-full" height="800"/>
+  <div class="bg-black absolute inset-0 pointer-events-none" style=`opacity: ${overlayOpacity || 0}%`></div>
+</div>
