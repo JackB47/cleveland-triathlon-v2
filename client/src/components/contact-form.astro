@@ -1,3 +1,43 @@
 <div class="content-block">
   CONTACT FORM
+  <form action="/api/contact.json" method="POST" class="contact-form">
+    <input class="border-2 border-black p-2 block" type="text" name="name" />
+    <input class="border-2 border-black p-2 block" type="email" name="email" />
+    <select name="topic" class="border-2 border-black p-2 block">
+      <option value="General Enquiry">General Enquiry</option>
+    </select>
+    <textarea name="message" class="border-2 border-black p-2 block"></textarea>
+    <button type="submit" class="border-2 border-black p-2 block">Submit Form</button>
+    <p class="contact-form__response"></p>
+  </form>
 </div>
+
+<script>
+  const responseElement = document.querySelector('.contact-form__response')
+  document.querySelectorAll('.contact-form').forEach(form => {
+    console.log("HELLO?")
+    form.addEventListener('submit', async (event) => {
+      try {
+        console.log("SUBMITTING!")
+        event.preventDefault()
+        const jsonFormData = JSON.stringify(Object.fromEntries(new FormData(form)));
+        const res = await fetch('/api/contact.json', {
+          method: 'POST',
+          body: jsonFormData
+        })
+        
+        console.log(res.status)
+        if (res.status === 200) {
+          responseElement.classList.add('text-green-500')
+          responseElement.innerText = 'Your form has been submitted successfully.'
+        } else {
+          responseElement.classList.add('text-red-500')
+          responseElement.innerText = 'There was an error submitting your form. Please try again.'
+        }
+      } catch (error) {
+        responseElement.classList.add('text-red-500')
+        responseElement.innerText = 'There was an error submitting your form. Please try again.'
+      }
+    })
+  })
+</script>

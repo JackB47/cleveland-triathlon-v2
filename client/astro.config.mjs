@@ -6,6 +6,7 @@ import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 export default defineConfig({
+  output: "hybrid",
   integrations: [
     sanity({
       projectId: "xwlevetc",
@@ -14,6 +15,8 @@ export default defineConfig({
       useCdn: false,
     }),
     react(),
-    tailwind(),
+    tailwind({
+      nesting: true,
+    }),
   ],
 });

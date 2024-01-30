@@ -1,0 +1,19 @@
+---
+export async function getStaticPaths() {
+  const events = await sanityClient.fetch(`*[_type == "event"]`)
+
+  return events.map((event) => {
+    return {
+      params: {
+        slug: event.slug.current,
+      },
+      props: { ...event },
+    };
+  });
+}
+
+const { props: event } = Astro
+console.log({ Astro })
+---
+
+<p>{ event.title }</p>
