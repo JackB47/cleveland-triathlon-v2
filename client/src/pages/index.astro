@@ -1,13 +1,13 @@
 ---
-import DefaultLayout from '../layouts/default.astro'
+import DefaultLayout from "../layouts/default.astro";
 import { sanityClient } from "sanity:client";
-import PageBuilder from '../components/page-builder.astro'
+import PageBuilder from "../components/page-builder.astro";
 
-const pageContent = await sanityClient.fetch(`*[_type == "page" && slug.current == 'homepage'][0]`)
-
+const pageContent = await sanityClient.fetch(
+  `*[_type == "page" && slug.current == 'homepage'][0]`
+);
 ---
 
 <DefaultLayout>
-	<PageBuilder blocks={pageContent.content} />
-	<p>HELLO</p>
+  <PageBuilder blocks={pageContent.content} />
 </DefaultLayout>

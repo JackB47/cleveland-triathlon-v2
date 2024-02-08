@@ -1,0 +1,58 @@
+---
+console.log(Astro.props);
+import type { Code } from "astro:components";
+import { sanityClient } from "sanity:client";
+import { urlForImage } from "../../sanity/urlForImage";
+import { PortableText } from "astro-portabletext";
+
+let staff = [];
+if (Astro.props.node.showAllStaff) {
+  staff = await sanityClient.fetch(`*[_type == "staff"]`);
+}
+---
+
+<div class="content-block">
+  {
+    staff.map((staffMember) => {
+      return (
+        <div class="flex flex-col sm:flex-row items-start gap-4 md:gap-8 border-b-2 border-b-gray-200 pb-10 last:border-0 mb-10 last:mb-0">
+          <img
+            class="object-cover rounded-full h-28 w-28 sm:h-40 sm:w-40 md:h-60 md:w-60"
+            src={urlForImage(staffMember.image)}
+            alt={staffMember.image.alt}
+            height="240"
+            width="240"
+            loading="lazy"
+          />
+          <div class="sm:py-4 md:py-6">
+            <h2 class="text-2xl md:text-3xl uppercase font-bold mb-1">
+              {staffMember.fullName}
+            </h2>
+            {staffMember.roles.length > 0 && (
+              <div class="text-base uppercase font-semibold mb-3">
+                {staffMember.roles
+                  .map((role) => {
+                    return role;
+                  })
+                  .join(", ")}
+              </div>
+            )}
+            {staffMember.qualifications.length > 0 && (
+              <>
+                <p class="uppercase font-semibold">Qualifications:</p>
+                <div class="mb-3">
+                  {staffMember.qualifications
+                    .map((role) => {
+                      return role;
+                    })
+                    .join(", ")}
+                </div>
+              </>
+            )}
+            <PortableText value={staffMember.bio} />
+          </div>
+        </div>
+      );
+    })
+  }
+</div>

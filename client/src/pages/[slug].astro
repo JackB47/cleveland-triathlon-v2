@@ -1,10 +1,15 @@
 ---
 import { sanityClient } from "sanity:client";
+import DefaultLayout from "../layouts/default.astro";
+import PageBuilder from "../components/page-builder.astro";
 
 export async function getStaticPaths() {
-  const page = await sanityClient.fetch(`*[_type == "page" && slug.current != 'homepage']`)
+  const pages = await sanityClient.fetch(
+    `*[_type == "page" && slug.current != 'homepage' && slug.current != 'events']`
+  );
 
-  return page.map((page) => {
+  return pages.map((page) => {
+    console.log("page??", page);
     return {
       params: {
         slug: page.slug.current,
@@ -14,8 +19,19 @@ export async function getStaticPaths() {
   });
 }
 
-const { props: page } = Astro
-console.log({ Astro })
+const { props: page } = Astro;
+console.log({ page });
 ---
 
-<p>{ page.title }</p>
+<DefaultLayout>
+  <h1
+    class="uppercase text-5xl font-semibold tracking-normal mb-4 md:mb-6 lg:mb-10 content-block"
+  >
+    {page.title}
+  </h1>
+  <PageBuilder blocks={page.content} />
+</DefaultLayout>
+
+<script>
+  console.log("HELLO???");
+</script>

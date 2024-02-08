@@ -1,0 +1,20 @@
+---
+import DefaultLayout from "../../layouts/default.astro";
+import { sanityClient } from "sanity:client";
+import PageBuilder from "../../components/page-builder.astro";
+
+const page = await sanityClient.fetch(
+  `*[_type == "page" && slug.current == 'events'][0]`
+);
+---
+
+<DefaultLayout>
+  <div class="py-10">
+    <h1
+      class="content-block text-3xl sm:text-4xl md:text-5xl lg:text-7xl uppercase font-bold mb-8"
+    >
+      {page.title}
+    </h1>
+    <PageBuilder blocks={page.content} />
+  </div>
+</DefaultLayout>

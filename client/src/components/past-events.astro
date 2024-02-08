@@ -3,12 +3,12 @@ const { node } = Astro.props;
 import { sanityClient } from "sanity:client";
 import EventCard from "./event-card.astro";
 
-const upcomingEvents = await sanityClient.fetch(
-  `*[_type == "event" && dateTime(date.start) > dateTime(now())]`
+const pastEvents = await sanityClient.fetch(
+  `*[_type == "event" && dateTime(date.start) < dateTime(now())]`
 );
 ---
 
 <section class="content-block mb-10">
   <h2 class="font-semibold text-5xl uppercase mb-4">{node.title}</h2>
-  {upcomingEvents.map((event) => <EventCard event={event} />)}
+  {pastEvents.map((event) => <EventCard event={event} />)}
 </section>

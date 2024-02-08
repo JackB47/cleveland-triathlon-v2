@@ -1,69 +1,115 @@
 ---
-const { event } = Astro.props
-import { PortableText } from 'astro-portabletext'
+const { event } = Astro.props;
+import { PortableText } from "astro-portabletext";
 
 const getStartDate = (config) => {
-  const date = new Date(event.date.start)
-  return date.toLocaleDateString('en-GB', config)
-}
+  const date = new Date(event.date.start);
+  return date.toLocaleDateString("en-GB", config);
+};
+
+const formattedLocation = [
+  event.location?.line_one,
+  event.location?.line_two,
+  event.location?.line_three,
+  event.location?.city,
+  event.location?.postcode,
+]
+  .filter(Boolean)
+  .join(", ");
 ---
 
-<event-card class=`border-4 border-black p-4 sm:p-8 flex flex-col sm:flex-row transition-all duration-300 ease-in-out ${event.slug.current ? 'hover:shadow-2xl cursor-pointer' : ''}`>
-  <div class="border-b-2 sm:border-b-0 sm:border-r-2 border-black sm:pr-8 sm:mr-8 sm:text-center uppercase sm:space-y-2 mb-4 pb-4 sm:pb-0 sm:mb-0">
-    <p class="text-3xl font-semibold">{getStartDate({ day: 'numeric' })}</p>
-    <p class="text-2xl">{getStartDate({ month: 'short' })}</p>
-    <p>{getStartDate({ year: 'numeric' })}</p>
+<event-card
+  class=`border-4 border-black p-4 sm:p-8 flex flex-col sm:flex-row transition-all duration-300 ease-in-out ${event.slug.current ? 'hover:shadow-2xl cursor-pointer' : ''}`
+>
+  <div
+    class="border-b-2 sm:border-b-0 sm:border-r-2 border-black sm:pr-8 sm:mr-8 sm:text-center uppercase sm:space-y-2 mb-4 pb-4 sm:pb-0 sm:mb-0"
+  >
+    <p class="text-3xl font-semibold">{getStartDate({ day: "numeric" })}</p>
+    <p class="text-2xl">{getStartDate({ month: "short" })}</p>
+    <p>{getStartDate({ year: "numeric" })}</p>
   </div>
   <div class="w-full">
-    <h3 class="text-3xl sm:text-4xl font-bold uppercase mb-2 sm:mb-4">{event.title}</h3>
+    <h3 class="text-3xl sm:text-4xl font-bold uppercase mb-2 sm:mb-4">
+      {event.title}
+    </h3>
     <div class="mb-4">
       <PortableText value={event.excerpt} />
     </div>
-    <div class="sm:grid sm:mb-4 border-t-2 border-black pt-2 sm:pt-4" style=`grid-template-columns: repeat(${event.stages.length}, 1fr)`>
-      {event.stages.map(stage => {
-        console.log({ stage })
-        return (
-          <div class="border-b-2 sm:border-b-0 sm:border-r-2 border-black pb-2 sm:pb-0 sm:pr-2 sm:mr-8 last:border-none">
-            <p class="uppercase">{stage.type}</p>
-            <strong class="text-xl">{stage.distance}</strong>
-          </div>
-        )
-      })}
-    </div>
-    <div class="mb-4 flex gap-2 border-t-2 border-black pt-4">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 min-w-6 inline-block">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-      </svg>
-      
-      <a href={event.location.maplink} class="pseudo-underline">
-        {event.location.line_one}
-        {event.location.line_two}
-        {event.location.line_three}
-        {event.location.city}
-        {event.location.postcode}
-      </a>
-    </div>
-    <a href={`/events/${event.slug.current}`} class="button w-full text-center sm:w-auto pseudo-underline-parent hover:text-white hover:bg-black transition-all duration-300 ease-in-out" data-anchor-target><span>View Event</span></a>
+    {
+      event.stages && (
+        <div
+          class="sm:grid sm:mb-4 border-t-2 border-black pt-2 sm:pt-4"
+          style={`grid-template-columns: repeat(${event.stages.length}, 1fr)`}
+        >
+          {event.stages.map((stage) => {
+            console.log({ stage });
+            return (
+              <div class="border-b-2 sm:border-b-0 sm:border-r-2 border-black pb-2 sm:pb-0 sm:pr-2 sm:mr-8 last:border-none">
+                <p class="uppercase">{stage.type}</p>
+                <strong class="text-xl">{stage.distance}</strong>
+              </div>
+            );
+          })}
+        </div>
+      )
+    }
+    {
+      event.location?.maplink || event.location?.line_one ? (
+        <div class="mb-4 flex gap-2 border-t-2 border-black pt-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6 min-w-6 inline-block"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+            />
+          </svg>
+
+          {!event.location?.maplink ? (
+            <p>{formattedLocation}</p>
+          ) : (
+            <a href={event.location?.maplink} class="pseudo-underline">
+              {formattedLocation}
+            </a>
+          )}
+        </div>
+      ) : null
+    }
+    <a
+      href={`/events/${event.slug.current}`}
+      class="button w-full text-center sm:w-auto pseudo-underline-parent hover:text-white hover:bg-black transition-all duration-300 ease-in-out"
+      data-anchor-target><span>View Event</span></a
+    >
   </div>
 </event-card>
 
 <script>
   class EventCard extends HTMLElement {
     constructor() {
-      super()
+      super();
     }
 
     connectedCallback() {
-      console.log("Connected")
-      const anchor = this.querySelector('a[data-anchor-target]')
+      console.log("Connected");
+      const anchor = this.querySelector("a[data-anchor-target]");
       if (anchor) {
-        this.addEventListener('click', () => {
-          window.location.href = anchor.href
-        })
+        this.addEventListener("click", () => {
+          window.location.href = anchor.href;
+        });
       }
     }
   }
 
-  customElements.define('event-card', EventCard)
+  customElements.define("event-card", EventCard);
 </script>

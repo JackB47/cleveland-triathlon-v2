@@ -15,5 +15,24 @@ export default {
     {
       type: 'upcomingEvents',
     },
+    {
+      type: 'staffList',
+    },
+    {
+      type: 'pastEvents',
+    },
+    {
+      name: 'divider',
+      title: 'Divider',
+      type: 'object',
+      fields: [
+        {
+          name: 'divider',
+          title: 'Divider',
+          type: 'string',
+          initialValue: '---',
+        },
+      ],
+    },
   ],
 }

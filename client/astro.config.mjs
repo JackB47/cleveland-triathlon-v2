@@ -1,12 +1,14 @@
 import { defineConfig } from "astro/config";
 import { sanityIntegration as sanity } from "@sanity/astro";
 import react from "@astrojs/react";
+import vercel from "@astrojs/vercel/serverless";
 
 import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 export default defineConfig({
   output: "hybrid",
+  adapter: vercel(),
   integrations: [
     sanity({
       projectId: "xwlevetc",
@@ -19,4 +21,9 @@ export default defineConfig({
       nesting: true,
     }),
   ],
+  vite: {
+    ssr: {
+      noExternal: ["path-to-regexp"],
+    },
+  },
 });

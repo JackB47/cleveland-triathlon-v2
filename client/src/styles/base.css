@@ -16,7 +16,11 @@ ol {
 }
 
 .button {
-  @apply bg-white border-2 border-black px-5 py-3 inline-block uppercase font-semibold;
+  @apply bg-white border-2 border-black px-5 py-3 inline-block uppercase font-semibold transition-all duration-300 ease-in-out;
+
+  &:hover {
+    @apply bg-black text-white;
+  }
 }
 
 .pseudo-underline-parent {
@@ -45,4 +49,20 @@ ol {
     content: "";
     @apply h-px w-0 transition-all duration-200 ease-in-out absolute bg-current -bottom-px left-0;
   }
+}
+
+a.portable-text {
+  @apply underline font-semibold;
+}
+
+p.portable-text {
+  @apply content-block;
+}
+
+.portable-text + .portable-text {
+  @apply mt-4;
+}
+
+section.content-block {
+  @apply mt-10;
 }

@@ -1,43 +1,98 @@
-<div class="content-block">
-  CONTACT FORM
+---
+
+---
+
+<div class="content-block mb-10">
+  <h2 class="text-4xl uppercase font-semibold mb-4">
+    {Astro.props.node.heading}
+  </h2>
   <form action="/api/contact.json" method="POST" class="contact-form">
-    <input class="border-2 border-black p-2 block" type="text" name="name" />
-    <input class="border-2 border-black p-2 block" type="email" name="email" />
-    <select name="topic" class="border-2 border-black p-2 block">
-      <option value="General Enquiry">General Enquiry</option>
-    </select>
-    <textarea name="message" class="border-2 border-black p-2 block"></textarea>
-    <button type="submit" class="border-2 border-black p-2 block">Submit Form</button>
-    <p class="contact-form__response"></p>
+    <div class="flex gap-4 mb-4">
+      <div class="w-1/2">
+        <label>First Name</label>
+        <input
+          class="border-2 border-black p-2 block w-full placeholder:text-gray-600"
+          type="text"
+          name="first_name"
+          placeholder="Jo"
+        />
+      </div>
+      <div class="w-1/2">
+        <label>First Name</label>
+        <input
+          class="border-2 border-black p-2 block w-full placeholder:text-gray-600"
+          type="text"
+          name="last_name"
+          placeholder="Bloggs"
+        />
+      </div>
+    </div>
+    <div class="flex gap-4 mb-4">
+      <div class="w-1/2">
+        <label>Email Address</label>
+        <input
+          class="border-2 border-black p-2 block w-full placeholder:text-gray-600"
+          type="email"
+          name="email"
+          placeholder="example@email.com"
+        />
+      </div>
+      <div class="w-1/2">
+        <label>Topic</label>
+        <select name="topic" class="border-2 border-black p-2 block w-full">
+          <option value="General Enquiry">General Enquiry</option>
+        </select>
+      </div>
+    </div>
   </form>
+  <div>
+    <label>Message</label>
+    <textarea
+      name="message"
+      class="border-2 border-black p-2 block w-full mb-4"
+      rows="5"
+    >
+    </textarea>
+  </div>
+  <button
+    type="submit"
+    class="button w-full text-center sm:w-auto pseudo-underline-parent hover:text-white hover:bg-black transition-all duration-300 ease-in-out"
+  >
+    <span>Submit Form</span>
+  </button>
+  <p class="contact-form__response"></p>
 </div>
 
 <script>
-  const responseElement = document.querySelector('.contact-form__response')
-  document.querySelectorAll('.contact-form').forEach(form => {
-    console.log("HELLO?")
-    form.addEventListener('submit', async (event) => {
+  const responseElement = document.querySelector(".contact-form__response");
+  document.querySelectorAll(".contact-form").forEach((form) => {
+    form.addEventListener("submit", async (event) => {
       try {
-        console.log("SUBMITTING!")
-        event.preventDefault()
-        const jsonFormData = JSON.stringify(Object.fromEntries(new FormData(form)));
-        const res = await fetch('/api/contact.json', {
-          method: 'POST',
-          body: jsonFormData
-        })
-        
-        console.log(res.status)
+        console.log("SUBMITTING!");
+        event.preventDefault();
+        const jsonFormData = JSON.stringify(
+          Object.fromEntries(new FormData(form))
+        );
+        const res = await fetch("/api/contact.json", {
+          method: "POST",
+          body: jsonFormData,
+        });
+
+        console.log(res.status);
         if (res.status === 200) {
-          responseElement.classList.add('text-green-500')
-          responseElement.innerText = 'Your form has been submitted successfully.'
+          responseElement.classList.add("text-green-500");
+          responseElement.innerText =
+            "Your form has been submitted successfully.";
         } else {
-          responseElement.classList.add('text-red-500')
-          responseElement.innerText = 'There was an error submitting your form. Please try again.'
+          responseElement.classList.add("text-red-500");
+          responseElement.innerText =
+            "There was an error submitting your form. Please try again.";
         }
       } catch (error) {
-        responseElement.classList.add('text-red-500')
-        responseElement.innerText = 'There was an error submitting your form. Please try again.'
+        responseElement.classList.add("text-red-500");
+        responseElement.innerText =
+          "There was an error submitting your form. Please try again.";
       }
-    })
-  })
+    });
+  });
 </script>

@@ -1,0 +1,47 @@
+---
+const { maplink } = Astro.props;
+console.log("ASTRO >>>", Astro.props);
+---
+
+<map-block data-link={maplink}>
+  <div id="map" class="h-[400px]"></div>
+</map-block>
+
+<script>
+  import Leaflet from "leaflet";
+
+  class MapBlock extends HTMLElement {
+    constructor() {
+      super();
+      this.maplink = this.dataset.link;
+      this._getLatLng();
+      this._init();
+    }
+
+    _getLatLng() {
+      const [lat, lng] = new URL(this.maplink).searchParams
+        .get("ll")
+        ?.split(",");
+
+      this.lat = lat;
+      this.lng = lng;
+    }
+
+    _init() {
+      const map = Leaflet.map("map").setView([this.lat, this.lng], 14);
+
+      console.log({ Leaflet });
+
+      // add the OpenStreetMap tiles
+      Leaflet.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 17,
+        attribution:
+          '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>',
+      }).addTo(map);
+
+      Leaflet.marker([this.lat, this.lng]).addTo(map);
+    }
+  }
+
+  customElements.define("map-block", MapBlock);
+</script>

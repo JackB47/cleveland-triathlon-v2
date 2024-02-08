@@ -1,20 +1,26 @@
 ---
-import { PortableText } from 'astro-portabletext';
-import Hero from './hero.astro';
-import ContactForm from './contact-form.astro';
-import UpcomingEvents from './upcoming-events.astro';
+import { PortableText } from "astro-portabletext";
+import Hero from "./hero.astro";
+import ContactForm from "./contact-form.astro";
+import UpcomingEvents from "./upcoming-events.astro";
+import StaffList from "./staff-list.astro";
+import PastEvents from "./past-events.astro";
+import Divider from "./divider.astro";
 
 const { blocks } = Astro.props;
-
 ---
 
 <PortableText
   value={blocks}
+  class="portable-text"
   components={{
     type: {
       hero: Hero,
       contactForm: ContactForm,
-      upcomingEvents: UpcomingEvents
-    }
+      upcomingEvents: UpcomingEvents,
+      staffList: StaffList,
+      pastEvents: PastEvents,
+      divider: Divider,
+    },
   }}
 />
